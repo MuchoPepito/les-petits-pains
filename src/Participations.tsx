@@ -18,36 +18,39 @@ class Participations extends Component<Props, State> {
       <div className="table-responsive">
         <table className="table">
           <thead>
-            <th scope="col-1">#</th>
-            <th scope="col-5">Nom</th>
-            <th scope="col-5">Date</th>
-            
-            <th scope="col-1">Swap</th>
+            <tr>
+              <th scope="col-1">#</th>
+              <th scope="col-5">Nom</th>
+              <th scope="col-5">Date</th>
+              <th scope="col-1">Swap</th>
+            </tr>
           </thead>
-          <Participation
-            order={1}
-            isActive={true}
-            date={new Date()}
-            name="test"
-          />
-          <Participation
-            order={1}
-            isActive={true}
-            date={new Date()}
-            name="test"
-          />
-          <Participation
-            order={1}
-            isActive={true}
-            date={new Date()}
-            name="test"
-          />
-          <Participation
-            order={1}
-            isActive={true}
-            date={new Date()}
-            name="test"
-          />
+          <tbody>
+            <Participation
+              order={1}
+              isActive={true}
+              date={new Date()}
+              name="test"
+            />
+            <Participation
+              order={1}
+              isActive={true}
+              date={new Date()}
+              name="test"
+            />
+            <Participation
+              order={1}
+              isActive={true}
+              date={new Date()}
+              name="test"
+            />
+            <Participation
+              order={1}
+              isActive={true}
+              date={new Date()}
+              name="test"
+            />
+          </tbody>
         </table>
       </div>
     );
@@ -71,7 +74,11 @@ const Participation = (props: Participation) => {
       <th scope="row">{order}</th>
       <td>{name}</td>
       <td>{date.toDateString()}</td>
-      {auth0Client.isAuthenticated() ? <td>swap link</td> : <td>swap link not available (sign in to see it)</td>}
+      {auth0Client.isAuthenticated() ? (
+        <td>swap link</td>
+      ) : (
+        <td>swap link not available (sign in to see it)</td>
+      )}
     </tr>
   );
 };

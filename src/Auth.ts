@@ -16,10 +16,10 @@ class Auth {
   constructor() {
     this._auth0 = new auth0.WebAuth({
       domain: "sopradialog.eu.auth0.com",
-      audience: "https://sopradialog.eu.auth0.com/userinfo",
+      audience: "https://sopradialog.eu.auth0.com/api/v2/",
       clientID: "OQXzQKJooX9lOulr0po99TGQPlb7GaBb",
       redirectUri: "http://localhost:3000/callback",
-      responseType: "id_token",
+      responseType: "token id_token",
       scope: "openid profile"
     });
   }
@@ -49,6 +49,7 @@ class Auth {
         }
         this.idToken = authResult.idToken;
         this.profile = authResult.idTokenPayload;
+        console.log(authResult);
         //set the time that the id token will expire at
         this.expiresAt = authResult.idTokenPayload.exp * 1000;
         resolve();
