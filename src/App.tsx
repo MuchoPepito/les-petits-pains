@@ -1,20 +1,49 @@
 import React, { Component } from "react";
 import NavBar from "./NavBar";
 import Participations from "./Participations";
-import {Route} from 'react-router-dom';
-import Callback from './Callback';
-class App extends Component {
+import { Route, withRouter } from "react-router-dom";
+import Callback from "./Callback";
+import auth0Client from "./Auth";
+class App extends Component<any, any> {
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      checkingSession: true
+    };
+  }
+
+  async componentDidMount() {
+    if (this.props.location.pathname === "/callback") {
+      this.setState({ checkingSession: false });
+      return;
+    }
+
+    try {
+      await auth0Client.silentAuth();
+      this.forceUpdate();
+    } catch (err) {
+      if (err.error !== "login_required") console.log(err.error);
+    }
+    this.setState({ checkingSession: false });
+  }
+
   render() {
-    return (
-      <div className="container-fluid">
+    const toRender = (
+      <div>
         <NavBar />
         <div className="row">
-          <Route exact path='/' component={Participations}/>
-          <Route exact path='/callback' component={Callback}/>
+          <Route exact path="/" component={Participations} />
+          <Route exact path="/callback" component={Callback} />
         </div>
+      </div>
+    );
+
+    return (
+      <div className="container-fluid">
+        {!this.state.checkingSession ? toRender : ""}
       </div>
     );
   }
 }
 
-export default App;
+export default withRouter(App);
