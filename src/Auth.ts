@@ -6,6 +6,7 @@ class Auth {
   profile: any;
   idToken: any;
   expiresAt: any;
+  accessToken: any;
 
   public get auth0(): auth0.WebAuth {
     return this._auth0;
@@ -17,7 +18,7 @@ class Auth {
   constructor() {
     this._auth0 = new auth0.WebAuth({
       domain: "sopradialog.eu.auth0.com",
-      audience: "https://sopradialog.eu.auth0.com/api/v2/",
+      audience: "https://lespetitspains/",
       clientID: "OQXzQKJooX9lOulr0po99TGQPlb7GaBb",
       redirectUri: "http://localhost:3000/callback",
       responseType: "token id_token",
@@ -32,6 +33,10 @@ class Auth {
   getIdToken = () => {
     return this.idToken;
   };
+
+  getAccessToken = () => {
+    return this.accessToken;
+  }
 
   isAuthenticated = () => {
     return new Date().getTime() < this.expiresAt;
@@ -57,6 +62,8 @@ class Auth {
   setSession = (authResult: any) => {
     this.idToken = authResult.idToken;
     this.profile = authResult.idTokenPayload;
+    this.accessToken = authResult.accessToken;
+    console.log(authResult.accessToken);
     //set the time that the id token will expire at
     this.expiresAt = authResult.idTokenPayload.exp * 1000;
   };

@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import { idText } from "typescript";
 import auth0Client from "./Auth";
+import restApiService from "./RestApiService";
+import EquipeDto from "./ApiDto/EquipeDto";
 
 interface Props {}
 
@@ -11,6 +10,13 @@ interface State {}
 class Participations extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
+  }
+
+  async componentDidMount() {
+
+    const response = await restApiService.getEquipe(2);
+    console.log(response);
+
   }
 
   render() {
