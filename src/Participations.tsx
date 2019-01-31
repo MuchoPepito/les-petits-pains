@@ -2,21 +2,47 @@ import React, { Component } from "react";
 import auth0Client from "./Auth";
 import restApiService from "./RestApiService";
 import EquipeDto from "./ApiDto/EquipeDto";
+import ParticipantDto from "./ApiDto/ParticipantDto";
+import ParticipationDto from "./ApiDto/ParticipationDto";
 
-interface Props {}
+interface Props {
+}
 
-interface State {}
+interface State {
+  participations: ParticipantDto[]
+}
 
 class Participations extends Component<Props, State> {
+
   constructor(props: Props) {
     super(props);
+    this.state = {
+      participations: []
+    };
+  }
+
+  checkIfUserHasATeam = async () => {
+    if(auth0Client.isAuthenticated){
+      const participant = await restApiService.whoAmI();
+      console.log(participant);
+      if(!participant.equipe){
+        console.log("L'utilisateur n'a pas d'équipe");
+      }
+    }
   }
 
   async componentDidMount() {
-
-    const response = await restApiService.getEquipe(2);
-    console.log(response);
-
+    this.checkIfUserHasATeam();
+    try{
+      const response = await restApiService.getParticipations();
+      let participations = response._embedded.participations;
+      participations.map((participation:ParticipationDto, index:number) => {
+        this.state.participations.push(participation);
+      })
+      console.log(this.state.participations);
+    }catch(err){
+      console.log(err)
+    }
   }
 
   render() {

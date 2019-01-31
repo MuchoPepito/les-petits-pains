@@ -5,12 +5,17 @@ import Properties from "./Properties";
 import ParticipantDto from "./ApiDto/ParticipantDto";
 import ParticipationDto from "./ApiDto/ParticipationDto";
 import EchangeDto from "./ApiDto/EchangeDto";
-import { async } from "q";
 
 const { contextUrl, endPoints } = Properties;
 
 class RestApiService {
   constructor() {}
+
+  whoAmI = async () => {
+    const headers = this.generateHeadersWithBearerToken();
+    const response = await axios.get(contextUrl.concat("whoami"), headers);
+    return response.data;
+  }
 
   getParticipants = async () => {
     return this.getResource(endPoints.participants);
