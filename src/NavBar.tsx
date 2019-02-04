@@ -10,7 +10,7 @@ const NavBar = (props:any) => {
   }
 
   return (
-    <nav className="navbar navbar-dark bg-primary fixed-top">
+    <nav className="navbar navbar-dark bg-info fixed-top">
       <Link className="navbar-brand" to="/">
         Les petits pains
       </Link>

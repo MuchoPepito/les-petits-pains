@@ -17,6 +17,12 @@ class RestApiService {
     return response.data;
   }
 
+  generateParticipant = async () => {
+    const headers = this.generateHeadersWithBearerToken();
+    const response = await axios.get(contextUrl.concat("generateParticipant"), headers)
+    return response.data;
+  }
+
   getParticipants = async () => {
     return this.getResource(endPoints.participants);
   };
@@ -76,6 +82,10 @@ class RestApiService {
     return this.updateResource(resouceRef, participant);
   };
 
+  updateCurrentParticipant = async (currentParticipant:any) => {
+    return this.updateResource(endPoints.participants.concat(currentParticipant.id.toString()), currentParticipant);
+  }
+
   updateParticipation = async (
     resouceRef: string,
     participation: ParticipantDto
@@ -114,6 +124,7 @@ class RestApiService {
       return response.data;
     } catch (err) {
       console.log(err);
+      throw err
     }
   };
 

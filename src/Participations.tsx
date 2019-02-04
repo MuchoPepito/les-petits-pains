@@ -21,18 +21,9 @@ class Participations extends Component<Props, State> {
     };
   }
 
-  checkIfUserHasATeam = async () => {
-    if(auth0Client.isAuthenticated){
-      const participant = await restApiService.whoAmI();
-      console.log(participant);
-      if(!participant.equipe){
-        console.log("L'utilisateur n'a pas d'équipe");
-      }
-    }
-  }
+
 
   async componentDidMount() {
-    this.checkIfUserHasATeam();
     try{
       const response = await restApiService.getParticipations();
       let participations = response._embedded.participations;

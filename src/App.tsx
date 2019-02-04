@@ -4,6 +4,7 @@ import Participations from "./Participations";
 import { Route, withRouter } from "react-router-dom";
 import Callback from "./Callback";
 import auth0Client from "./Auth";
+import TeamChoice from "./TeamChoice";
 class App extends Component<any, any> {
   constructor(props: any) {
     super(props);
@@ -29,17 +30,18 @@ class App extends Component<any, any> {
 
   render() {
     const toRender = (
-      <div>
+      <div className="container-fluid">
         <NavBar />
         <div className="row">
           <Route exact path="/" component={Participations} />
           <Route exact path="/callback" component={Callback} />
+          <Route exact path="/teamchoice" component={TeamChoice} />
         </div>
       </div>
     );
 
     return (
-      <div className="container-fluid">
+      <div>
         {!this.state.checkingSession ? toRender : ""}
       </div>
     );
