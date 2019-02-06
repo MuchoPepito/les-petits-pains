@@ -5,6 +5,7 @@ import Properties from "./Properties";
 import ParticipantDto from "./ApiDto/ParticipantDto";
 import ParticipationDto from "./ApiDto/ParticipationDto";
 import EchangeDto from "./ApiDto/EchangeDto";
+import moment from "moment";
 
 const { contextUrl, endPoints } = Properties;
 
@@ -20,6 +21,15 @@ class RestApiService {
   generateParticipant = async () => {
     const headers = this.generateHeadersWithBearerToken();
     const response = await axios.get(contextUrl.concat("generateParticipant"), headers)
+    return response.data;
+  }
+
+  getActiveParticipations = async() => {
+    const response = await axios.get(contextUrl.concat(endPoints.participations).concat("search/findAllByDateIsGreaterThanEqual"), {
+      params: {
+        date: moment().format("YYYY-MM-DD")
+      }
+    })
     return response.data;
   }
 

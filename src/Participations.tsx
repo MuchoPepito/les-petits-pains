@@ -1,81 +1,53 @@
 import React, { Component } from "react";
 import auth0Client from "./Auth";
 import restApiService from "./RestApiService";
-import EquipeDto from "./ApiDto/EquipeDto";
-import ParticipantDto from "./ApiDto/ParticipantDto";
-import ParticipationDto from "./ApiDto/ParticipationDto";
+import moment from "moment";
+class Participations extends Component<any, any> {
 
-interface Props {
-}
-
-interface State {
-  participations: ParticipantDto[]
-}
-
-class Participations extends Component<Props, State> {
-
-  constructor(props: Props) {
+  constructor(props: any) {
     super(props);
     this.state = {
       participations: []
     };
   }
 
-
-
   async componentDidMount() {
     try{
-      const response = await restApiService.getParticipations();
+      const response = await restApiService.getActiveParticipations();
       let participations = response._embedded.participations;
-      participations.map((participation:ParticipationDto, index:number) => {
-        this.state.participations.push(participation);
+      participations.map((participation:any, index:number) => {
+        this.setState({
+          participations: [...this.state.participations, participation]
+        })
       })
-      console.log(this.state.participations);
     }catch(err){
       console.log(err)
     }
   }
 
   render() {
+
     return (
+      <div className="card bg-light col p-0">
       <div className="table-responsive">
-        <table className="table">
-          <thead>
+        <table className="table table-striped mb-0 mt-0">
+          {/* <thead>
             <tr>
-              <th scope="col-1">#</th>
-              <th scope="col-5">Nom</th>
-              <th scope="col-5">Date</th>
-              <th scope="col-1">Swap</th>
+              <th scope="col">#</th>
+              <th scope="col">Nom</th>
+              <th scope="col">Date</th>
+              <th scope="col">Swap</th>
             </tr>
-          </thead>
+          </thead> */}
           <tbody>
-            <Participation
-              order={1}
-              isActive={true}
-              date={new Date()}
-              name="test"
-            />
-            <Participation
-              order={1}
-              isActive={true}
-              date={new Date()}
-              name="test"
-            />
-            <Participation
-              order={1}
-              isActive={true}
-              date={new Date()}
-              name="test"
-            />
-            <Participation
-              order={1}
-              isActive={true}
-              date={new Date()}
-              name="test"
-            />
+            {this.state.participations.map((participation:any, index:number) => {
+              return(<Participation key={participation.id} order={index+1} name={participation.participant.name} date={participation.date} isActive={participation.active} />)
+            })}
           </tbody>
         </table>
       </div>
+      </div>
+      
     );
   }
 }
@@ -90,15 +62,15 @@ interface Participation {
 const Participation = (props: Participation) => {
   const { order, name, date, isActive } = props;
   if (!isActive) {
-    return <div />;
+    return null;
   }
   return (
     <tr>
       <th scope="row">{order}</th>
       <td>{name}</td>
-      <td>{date.toDateString()}</td>
+      <td>{moment(date).format("DD/MM/YYYY")}</td>
       {auth0Client.isAuthenticated() ? (
-        <td>swap link</td>
+        <td><span className="ml-3 oi oi-transfer cursorhover"></span></td>
       ) : (
         <td>swap link not available (sign in to see it)</td>
       )}

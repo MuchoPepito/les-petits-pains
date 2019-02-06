@@ -7,7 +7,8 @@ class TeamChoice extends Component<any, any> {
     super(props);
     this.state = {
       equipes: new Array(),
-      errors: ""
+      errors: "",
+      currentParticipant: localUserService.getLocalUser()
     };
   }
 
@@ -23,34 +24,55 @@ class TeamChoice extends Component<any, any> {
   handleSubmit = async (e: any) => {
     e.preventDefault();
     console.log("submit team id : " + this.state.chosenTeamRef);
-    let currentParticipant = localUserService.getLocalUser();
-    currentParticipant.equipe = this.state.chosenTeamRef;
+    this.state.currentParticipant.equipe = this.state.chosenTeamRef;
+    if(this.state.newUsername){
+      this.state.currentParticipant.name = this.state.newUsername;
+    }
     restApiService
-      .updateCurrentParticipant(currentParticipant)
+      .updateCurrentParticipant(this.state.currentParticipant)
       .catch(error => {
         console.log("Error:" + error.message);
-        this.setState({errors: error.message});
+        this.setState({ errors: error.message });
       })
-      .then(() => this.props.history.replace("/"));
-
+      .then(() => {
+        localUserService.updateLocalUserName(this.state.newUsername);
+        this.props.history.replace("/")
+      });
   };
 
-  handleChange = async (e: any) => {
+  handleSelectChange = async (e: any) => {
     this.setState({
       chosenTeamRef: e.target.value
     });
   };
 
+  handleInputChange = async (e:any) => {
+    console.log(e.target.value)
+    this.setState({
+      newUsername : e.target.value
+    });
+  }
+
   render() {
+    const nameInput = (
+      <div className="form-group">
+        <label htmlFor="name">Votre nom d'utilisateur (Prénom et Nom):</label>
+        <input type="text" className="form-control" placeholder="ex: Valentchoin Ricrac" onChange={this.handleInputChange}></input>
+        <small id="nameHelp" className="form-text text-muted">Ce champ apparaît car votre nom n'a pas pu être récupéré.</small>
+      </div>
+    );
+
     return (
       <div className="offset-sm-5 offset-2">
         <form onSubmit={this.handleSubmit}>
+          {this.state.currentParticipant.name.includes("@") ? nameInput : ""}
+
           <div className="form-group">
             <label htmlFor="selectTeam">Veuillez choisir une équipe :</label>
             <select
               className="form-control"
               id="selectTeam"
-              onChange={this.handleChange}
+              onChange={this.handleSelectChange}
               defaultValue={this.state.chosenTeamRef}
             >
               {this.state.equipes.map((equipe: any, index: number) => (
@@ -65,7 +87,7 @@ class TeamChoice extends Component<any, any> {
               Valider
             </button>
           </div>
-          <span style={{color: 'red'}}>{this.state.errors}</span>
+          <span style={{ color: "red" }}>{this.state.errors}</span>
         </form>
       </div>
     );

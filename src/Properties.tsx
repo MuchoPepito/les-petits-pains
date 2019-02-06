@@ -7,6 +7,7 @@ const Properties = {
         echanges: "echanges/",
         equipes: "equipes/"
     }
+    
 
 }
 

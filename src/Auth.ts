@@ -60,6 +60,7 @@ class Auth {
   };
 
   setSession = (authResult: any) => {
+    console.log("setting session");
     this.idToken = authResult.idToken;
     this.profile = authResult.idTokenPayload;
     this.accessToken = authResult.accessToken;
@@ -77,7 +78,9 @@ class Auth {
 
   silentAuth = () => {
     return new Promise((resolve, reject) => {
+      console.log("devkeys à remplacer !! https://auth0.com/docs/connections/social/devkeys");
       this.auth0.checkSession({}, (err, authResult) => {
+        console.log(err);
         if(err) return reject(err);
         this.setSession(authResult);
         resolve();

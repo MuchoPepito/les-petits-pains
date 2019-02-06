@@ -30,21 +30,17 @@ class App extends Component<any, any> {
 
   render() {
     const toRender = (
-      <div className="container-fluid">
+      <div className="container">
         <NavBar />
-        <div className="row">
-          <Route exact path="/" component={Participations} />
-          <Route exact path="/callback" component={Callback} />
-          <Route exact path="/teamchoice" component={TeamChoice} />
-        </div>
+          <div className="row">
+            <Route exact path="/" component={Participations} />
+            <Route exact path="/callback" component={Callback} />
+            <Route exact path="/teamchoice" component={TeamChoice} />
+          </div>
       </div>
     );
 
-    return (
-      <div>
-        {!this.state.checkingSession ? toRender : ""}
-      </div>
-    );
+    return <div>{!this.state.checkingSession ? toRender : ""}</div>;
   }
 }
 

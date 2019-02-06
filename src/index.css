@@ -13,3 +13,6 @@ code {
     monospace;
 }
 
+.cursorhover:hover {
+  cursor: pointer;
+}

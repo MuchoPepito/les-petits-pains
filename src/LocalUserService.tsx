@@ -14,6 +14,13 @@ class LocalUserService {
     }
     return null;
   };
+
+  updateLocalUserName = (name:string) => {
+    let localUser = this.getLocalUser();
+    localUser.name = name;
+    localStorage.setItem(currentParticipantKey, JSON.stringify(localUser));
+  }
+
 }
 
 const localUserService = new LocalUserService();
