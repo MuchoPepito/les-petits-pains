@@ -16,3 +16,7 @@ code {
 .cursorhover:hover {
   cursor: pointer;
 }
+
+.disablehover:hover{
+  cursor: not-allowed;
+}

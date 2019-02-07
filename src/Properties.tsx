@@ -5,7 +5,10 @@ const Properties = {
         participants: "participants/",
         participations: "participations/",
         echanges: "echanges/",
-        equipes: "equipes/"
+        equipes: "equipes/",
+        demanderEchange: "demanderEchange",
+        annulerEchange: "annulerEchange",
+        refuserEchange: "refuserEchange"
     }
     
 

@@ -25,7 +25,7 @@ class RestApiService {
   }
 
   getActiveParticipations = async() => {
-    const response = await axios.get(contextUrl.concat(endPoints.participations).concat("search/findAllByDateIsGreaterThanEqual"), {
+    const response = await axios.get(contextUrl.concat(endPoints.participations).concat("search/findAllByDateIsGreaterThanEqualOrderByDateAsc"), {
       params: {
         date: moment().format("YYYY-MM-DD")
       }
