@@ -19,7 +19,9 @@ class Participations extends Component<any, any> {
       const localUser = localUserService.getLocalUser();
       const response = await restApiService.getActiveParticipations();
       let participations = response._embedded.participations;
-      let ownParticipation = participations.filter((p:any) => p.participant.id === localUser.id)[0];
+      let ownParticipation = participations.filter(
+        (p: any) => p.participant.id === localUser.id
+      )[0];
       console.log(ownParticipation);
       this.setState({ ownParticipation: ownParticipation });
       participations.map((participation: any, index: number) => {
@@ -86,8 +88,14 @@ const Participation = (props: Participation) => {
   const infoTag = <span className="oi oi-tag ml-2" />;
 
   const popover = (
-    <Popover id="popover-basic" title="Echange en cours" style={{pointerEvents: "none"}}>
-        {participation.echange && participation.echange.emetteurName} souhaite échanger sa place avec {participation.echange && participation.echange.destinataireName}
+    <Popover
+      id="popover-basic"
+      title="Echange en cours"
+      style={{ pointerEvents: "none" }}
+    >
+      {participation.echange && participation.echange.emetteurName} souhaite
+      échanger sa place avec{" "}
+      {participation.echange && participation.echange.destinataireName}
     </Popover>
   );
 
@@ -97,8 +105,17 @@ const Participation = (props: Participation) => {
         ""
       ) : (
         <span
-          className={"ml-2 oi oi-transfer " + (ownParticipation.echange ? "disablehover": "cursorhover")}
-          onClick={participation.echange ? handleEchange : ()=>{return;}}
+          className={
+            "ml-2 oi oi-transfer " +
+            (ownParticipation.echange ? "disablehover" : "cursorhover")
+          }
+          onClick={
+            participation.echange
+              ? handleEchange
+              : () => {
+                  return;
+                }
+          }
         />
       )}
       {participation.echange && (
