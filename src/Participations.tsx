@@ -4,6 +4,7 @@ import restApiService from "./RestApiService";
 import moment from "moment";
 import Properties from "./Properties";
 import localUserService from "./LocalUserService";
+import { OverlayTrigger, Popover } from "react-bootstrap";
 class Participations extends Component<any, any> {
   constructor(props: any) {
     super(props);
@@ -18,10 +19,10 @@ class Participations extends Component<any, any> {
       const localUser = localUserService.getLocalUser();
       const response = await restApiService.getActiveParticipations();
       let participations = response._embedded.participations;
+      let ownParticipation = participations.filter((p:any) => p.participant.id === localUser.id)[0];
+      console.log(ownParticipation);
+      this.setState({ ownParticipation: ownParticipation });
       participations.map((participation: any, index: number) => {
-        if (participation.participant.id === localUser.id) {
-          this.setState({ ownParticipation: participation });
-        }
         this.setState({
           participations: [...this.state.participations, participation]
         });
@@ -36,25 +37,15 @@ class Participations extends Component<any, any> {
       <div className="card bg-light col p-0">
         <div className="table-responsive">
           <table className="table table-striped mb-0 mt-0">
-            {/* <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Nom</th>
-              <th scope="col">Date</th>
-              <th scope="col">Swap</th>
-            </tr>
-          </thead> */}
             <tbody>
               {this.state.participations.map(
                 (participation: any, index: number) => {
+                  console.log(participation);
                   return (
                     <Participation
                       key={participation.id}
-                      order={index + 1}
-                      name={participation.participant.name}
-                      date={participation.date}
-                      isActive={participation.active}
-                      id={participation.id}
+                      order={index}
+                      participation={participation}
                       ownParticipation={this.state.ownParticipation}
                     />
                   );
@@ -70,45 +61,66 @@ class Participations extends Component<any, any> {
 
 interface Participation {
   order: number;
-  name: string;
-  date: Date;
-  isActive: boolean;
-  id: number;
+  participation: any;
   ownParticipation: any;
 }
 
 const Participation = (props: Participation) => {
-  const { order, name, date, isActive, id, ownParticipation } = props;
-  if (!isActive) {
+  const { participation, ownParticipation } = props;
+  const { date, active, id } = participation;
+  const { name } = participation.participant;
+  if (!active) {
     return null;
   }
 
   async function handleEchange() {
-    const urlEchange =      Properties.contextUrl
-    .concat(Properties.endPoints.demanderEchange)
-    .concat("?idParticipation1=")
-    .concat(ownParticipation.id.toString())
-    .concat("&idParticipation2=")
-    .concat(id.toString());
+    const urlEchange = Properties.contextUrl
+      .concat(Properties.endPoints.demanderEchange)
+      .concat("?idParticipation1=")
+      .concat(ownParticipation.id.toString())
+      .concat("&idParticipation2=")
+      .concat(id.toString());
     console.log(urlEchange);
   }
 
+  const infoTag = <span className="oi oi-tag ml-2" />;
+
+  const popover = (
+    <Popover id="popover-basic" title="Echange en cours" style={{pointerEvents: "none"}}>
+        {participation.echange && participation.echange.emetteurName} souhaite échanger sa place avec {participation.echange && participation.echange.destinataireName}
+    </Popover>
+  );
+
+  const activeEchangeComponent = (
+    <td>
+      {participation.echange ? (
+        ""
+      ) : (
+        <span
+          className={"ml-2 oi oi-transfer " + (ownParticipation.echange ? "disablehover": "cursorhover")}
+          onClick={participation.echange ? handleEchange : ()=>{return;}}
+        />
+      )}
+      {participation.echange && (
+        <OverlayTrigger placement="left" overlay={popover}>
+          {infoTag}
+        </OverlayTrigger>
+      )}
+    </td>
+  );
+
+  const disabledEchangeComponent = (
+    <td>swap link not available (sign in to see it)</td>
+  );
+
   return (
     <tr>
-      <th scope="row">{order}</th>
+      <th scope="row">{props.order + 1}</th>
       <td>{name}</td>
       <td>{moment(date).format("DD/MM/YYYY")}</td>
-      {auth0Client.isAuthenticated() ? (
-        <td>
-          <span
-            className="ml-3 oi oi-transfer cursorhover"
-            onClick={handleEchange}
-          />
-          <span className="oi oi-tag ml-2 disablehover" />
-        </td>
-      ) : (
-        <td>swap link not available (sign in to see it)</td>
-      )}
+      {auth0Client.isAuthenticated()
+        ? activeEchangeComponent
+        : disabledEchangeComponent}
     </tr>
   );
 };
