@@ -20,3 +20,23 @@ code {
 .disablehover:hover {
   cursor: not-allowed;
 }
+
+@-moz-keyframes spin {
+  to { -moz-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+  to {transform:rotate(360deg);}
+}
+
+.spin {
+  animation: spin 1000ms linear infinite;
+}
+
+.my-sidebar {
+  -ms-flex: 0 0 230px;
+  flex: 0 0 230px;
+  background-color: greenyellow; 
+}

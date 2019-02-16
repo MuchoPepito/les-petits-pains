@@ -6,6 +6,7 @@ import localUserService from "./LocalUserService";
 const NavBar = (props: any) => {
   const signOut = () => {
     auth0Client.signOut();
+    localStorage.clear();
     props.history.replace("/");
   };
 

@@ -12,6 +12,43 @@ const { contextUrl, endPoints } = Properties;
 class RestApiService {
   constructor() {}
 
+  accepterEchange = async (id: number) => {
+    return this.handleEchange(id, endPoints.accepterEchange);
+  }
+
+  annulerEchange = async (id: number) => {
+    return this.handleEchange(id, endPoints.annulerEchange);
+  }
+
+  refuserEchange = async (id:number) => {
+    return this.handleEchange(id, endPoints.refuserEchange);
+  }
+
+  private async handleEchange(id: number, endpoint:string){
+    let axiosParams = {
+      headers : this.generateHeadersWithBearerToken()['headers'],
+      params : {
+        id : id
+      }
+    }
+    const uriRefuserEchange = contextUrl.concat(endpoint);
+    const response = await axios.get(uriRefuserEchange, axiosParams);
+    return response.data;
+  }
+
+  askEchange = async (ownParticipation:any, participation:any) => {
+    let axiosParams = {
+      headers : this.generateHeadersWithBearerToken()['headers'],
+      params : {
+        idParticipation1 : ownParticipation.id,
+        idParticipation2 : participation.id
+      }
+    }
+    const uriDemanderEchange = contextUrl.concat(endPoints.demanderEchange);
+    const response = await axios.get(uriDemanderEchange, axiosParams);
+    return response.data;
+  }
+
   whoAmI = async () => {
     const headers = this.generateHeadersWithBearerToken();
     const response = await axios.get(contextUrl.concat("whoami"), headers);

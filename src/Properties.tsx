@@ -8,7 +8,8 @@ const Properties = {
         equipes: "equipes/",
         demanderEchange: "demanderEchange",
         annulerEchange: "annulerEchange",
-        refuserEchange: "refuserEchange"
+        refuserEchange: "refuserEchange",
+        accepterEchange: "accepterEchange"
     }
     
 

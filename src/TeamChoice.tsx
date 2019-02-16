@@ -63,7 +63,7 @@ class TeamChoice extends Component<any, any> {
     );
 
     return (
-      <div className="offset-sm-5 offset-2">
+      <div className="offset-sm-4 offset-2">
         <form onSubmit={this.handleSubmit}>
           {this.state.currentParticipant.name.includes("@") ? nameInput : ""}
 
