@@ -31,22 +31,27 @@ class Participations extends Component<any, any> {
     };
   }
 
+  updateParticipations = async () => {
+    // this.setState({participations: []});
+    const response = await restApiService.getActiveParticipations();
+    let participations = response._embedded.participations;
+    participations.filter(
+      (p: any) => p.participant.id === localUserService.getLocalUser().id
+    ).map((ownP:any) => this.setState({ ownParticipation: ownP }));
+    participations.map((participation: any, index: number) => {
+      if(participation.echange){
+        if(!this.colorEchangeTag.get(participation.echange.id))
+          this.colorEchangeTag.set(participation.echange.id, this.getRandomColor());
+      }
+    });
+    this.setState({
+      participations: participations
+    });
+  };
+
   async componentDidMount() {
     try {
-      const response = await restApiService.getActiveParticipations();
-      let participations = response._embedded.participations;
-      participations.filter(
-        (p: any) => p.participant.id === localUserService.getLocalUser().id
-      ).map((ownP:any) => this.setState({ ownParticipation: ownP }));
-      
-      participations.map((participation: any, index: number) => {
-        if(participation.echange){
-          this.colorEchangeTag.set(participation.echange.id, this.getRandomColor());
-        }
-        this.setState({
-          participations: [...this.state.participations, participation]
-        });
-      });
+      this.updateParticipations();
     } catch (err) {
       console.log(err);
     }
@@ -67,6 +72,7 @@ class Participations extends Component<any, any> {
                       participation={participation}
                       ownParticipation={this.state.ownParticipation}
                       colorEchangeTag={this.colorEchangeTag}
+                      updateParticipations={this.updateParticipations}
                     />
                   );
                 }
@@ -84,10 +90,11 @@ interface Participation {
   participation: any;
   ownParticipation: any;
   colorEchangeTag: any;
+  updateParticipations:any;
 }
 
 const Participation = (props: Participation) => {
-  const { participation, ownParticipation, colorEchangeTag } = props;
+  const { participation, ownParticipation, colorEchangeTag, updateParticipations } = props;
   const { date, active, id } = participation;
   const { name } = participation.participant;
   const [callingApi, setCallingApi] = useState(false);
@@ -103,11 +110,13 @@ const Participation = (props: Participation) => {
       const response = await apiMethod();
       setCallingApi(false);
       console.log("fin appel api échange");
-      window.location.reload();
+      updateParticipations();
+      // window.location.reload();
     } catch (err) {
       console.log(err);
       alert("Une erreur s'est produite lors de la requête");
-      window.location.reload();
+      updateParticipations();
+      // window.location.reload();
     }
   };
 

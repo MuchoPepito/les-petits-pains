@@ -119,10 +119,10 @@ class RestApiService {
   };
 
   updateParticipant = async (
-    resouceRef: string,
+    id: number,
     participant: any
   ) => {
-    return this.updateResource(resouceRef, participant);
+    return this.updateResource(endPoints.participants.concat(id.toString()), participant);
   };
 
   updateCurrentParticipant = async (currentParticipant:any) => {

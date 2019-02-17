@@ -1,8 +1,5 @@
 import React, { Component, useState } from "react";
 import restApiService from "../RestApiService";
-import Properties from "../Properties";
-
-const { endPoints } = Properties;
 
 class GestionEquipe extends Component<any, any> {
   constructor(props: any) {

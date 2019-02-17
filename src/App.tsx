@@ -6,6 +6,7 @@ import Callback from "./Callback";
 import auth0Client from "./Auth";
 import TeamChoice from "./TeamChoice";
 import GestionEquipe from "./Admin/GestionEquipe";
+import GestionParticipant from "./Admin/GestionParticipant";
 class App extends Component<any, any> {
   constructor(props: any) {
     super(props);
@@ -38,6 +39,8 @@ class App extends Component<any, any> {
             <Route exact path="/callback" component={Callback} />
             <Route exact path="/teamchoice" component={TeamChoice} />
             <Route exact path="/admin/equipes" component={GestionEquipe}/>
+            <Route exact path="/admin/participants" component={GestionParticipant}/>
+
           </div>
       </div>
     );
