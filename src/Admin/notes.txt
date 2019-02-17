@@ -1,0 +1,12 @@
+Gestion équipe :
+Créer/modifier équipe
+
+Gestion utilisateur : 
+activer désactiver
+filtre utilisateur actif ou non 
+gérer changement d'équipe
+génération participation à revoir ?? => unshift des participations lorsqu'il y a un trou puis ajouter nouvelle participation
+
+Gestion participation :
+Modifier supprimer
+Filtre participation active ou non

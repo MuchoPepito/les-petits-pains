@@ -5,6 +5,7 @@ import { Route, withRouter } from "react-router-dom";
 import Callback from "./Callback";
 import auth0Client from "./Auth";
 import TeamChoice from "./TeamChoice";
+import GestionEquipe from "./Admin/GestionEquipe";
 class App extends Component<any, any> {
   constructor(props: any) {
     super(props);
@@ -36,6 +37,7 @@ class App extends Component<any, any> {
             <Route exact path="/" component={Participations} />
             <Route exact path="/callback" component={Callback} />
             <Route exact path="/teamchoice" component={TeamChoice} />
+            <Route exact path="/admin/equipes" component={GestionEquipe}/>
           </div>
       </div>
     );

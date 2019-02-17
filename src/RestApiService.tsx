@@ -1,10 +1,6 @@
 import axios from "axios";
 import auth0Client from "./Auth";
-import EquipeDto from "./ApiDto/EquipeDto";
 import Properties from "./Properties";
-import ParticipantDto from "./ApiDto/ParticipantDto";
-import ParticipationDto from "./ApiDto/ParticipationDto";
-import EchangeDto from "./ApiDto/EchangeDto";
 import moment from "moment";
 
 const { contextUrl, endPoints } = Properties;
@@ -102,29 +98,29 @@ class RestApiService {
     return this.getResource(endPoints.participations.concat(id.toString()));
   };
 
-  createEquipe = async (equipe: EquipeDto) => {
+  createEquipe = async (equipe: any) => {
     return this.createResource(endPoints.equipes, equipe);
   };
 
-  createParticipant = async (participant: ParticipantDto) => {
+  createParticipant = async (participant: any) => {
     return this.createResource(endPoints.participants, participant);
   };
 
-  createParticipation = async (participation: ParticipationDto) => {
+  createParticipation = async (participation: any) => {
     return this.createResource(endPoints.participations, participation);
   };
 
-  createEchange = async (echange: EchangeDto) => {
+  createEchange = async (echange: any) => {
     return this.createResource(endPoints.equipes, echange);
   };
 
-  updateEquipe = async (resouceRef: string, equipe: EquipeDto) => {
-    return this.updateResource(resouceRef, equipe);
+  updateEquipe = async (id: number, equipe: any) => {
+    return this.updateResource(endPoints.equipes.concat(id.toString()), equipe);
   };
 
   updateParticipant = async (
     resouceRef: string,
-    participant: ParticipantDto
+    participant: any
   ) => {
     return this.updateResource(resouceRef, participant);
   };
@@ -135,12 +131,12 @@ class RestApiService {
 
   updateParticipation = async (
     resouceRef: string,
-    participation: ParticipantDto
+    participation: any
   ) => {
     return this.updateResource(resouceRef, participation);
   };
 
-  updateEchange = async (resouceRef: string, echange: EchangeDto) => {
+  updateEchange = async (resouceRef: string, echange: any) => {
     return this.updateResource(resouceRef, echange);
   };
 
