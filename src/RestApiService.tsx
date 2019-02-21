@@ -8,6 +8,10 @@ const { contextUrl, endPoints } = Properties;
 class RestApiService {
   constructor() {}
 
+  unshift = async () => await axios.get(contextUrl.concat(endPoints.unshift));
+
+  generateParticipations = async () => await axios.get(contextUrl.concat(endPoints.generateParticipations));
+
   accepterEchange = async (id: number) => {
     return this.handleEchange(id, endPoints.accepterEchange);
   }
@@ -58,7 +62,7 @@ class RestApiService {
   }
 
   getActiveParticipations = async() => {
-    const response = await axios.get(contextUrl.concat(endPoints.participations).concat("search/findAllByDateIsGreaterThanEqualOrderByDateAsc"), {
+    const response = await axios.get(contextUrl.concat(endPoints.participations).concat("search/findAllByDateIsGreaterThanEqualAndParticipant_IsActiveIsTrueOrderByDateAsc"), {
       params: {
         date: moment().format("YYYY-MM-DD")
       }
@@ -130,10 +134,10 @@ class RestApiService {
   }
 
   updateParticipation = async (
-    resouceRef: string,
+    id: number,
     participation: any
   ) => {
-    return this.updateResource(resouceRef, participation);
+    return this.updateResource(endPoints.participations.concat(id.toString()), participation);
   };
 
   updateEchange = async (resouceRef: string, echange: any) => {

@@ -16,11 +16,13 @@ const NavBar = (props: any) => {
         <Link className="navbar-brand" to="/">
           Les petits pains
         </Link>
+        {localUserService.getLocalUser().admin && <Link className="text-white" to="/admin">Administration</Link>}
         {!auth0Client.isAuthenticated() && (
           <button className="btn btn-dark" onClick={auth0Client.signIn}>
             Connexion
           </button>
         )}
+        {console.log({auth0Client})}
         {auth0Client.isAuthenticated() && (
           <div>
             <label className="mr-2 text-white">

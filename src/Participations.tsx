@@ -6,12 +6,11 @@ import localUserService from "./LocalUserService";
 import { OverlayTrigger, Popover } from "react-bootstrap";
 
 class Participations extends Component<any, any> {
-
-  private colorEchangeTag:any = new Map();
+  private colorEchangeTag: any = new Map();
 
   getRandomColor() {
-    var letters = '0123456789ABCDEF';
-    var color = '#';
+    var letters = "0123456789ABCDEF";
+    var color = "#";
     for (var i = 0; i < 6; i++) {
       color += letters[Math.floor(Math.random() * 16)];
     }
@@ -23,8 +22,8 @@ class Participations extends Component<any, any> {
     this.state = {
       participations: [],
       ownParticipation: {
-        id : 0,
-        echange : {
+        id: 0,
+        echange: {
           id: 0
         }
       }
@@ -35,13 +34,18 @@ class Participations extends Component<any, any> {
     // this.setState({participations: []});
     const response = await restApiService.getActiveParticipations();
     let participations = response._embedded.participations;
-    participations.filter(
-      (p: any) => p.participant.id === localUserService.getLocalUser().id
-    ).map((ownP:any) => this.setState({ ownParticipation: ownP }));
+    participations
+      .filter(
+        (p: any) => p.participant.id === localUserService.getLocalUser().id
+      )
+      .map((ownP: any) => this.setState({ ownParticipation: ownP }));
     participations.map((participation: any, index: number) => {
-      if(participation.echange){
-        if(!this.colorEchangeTag.get(participation.echange.id))
-          this.colorEchangeTag.set(participation.echange.id, this.getRandomColor());
+      if (participation.echange) {
+        if (!this.colorEchangeTag.get(participation.echange.id))
+          this.colorEchangeTag.set(
+            participation.echange.id,
+            this.getRandomColor()
+          );
       }
     });
     this.setState({
@@ -90,11 +94,16 @@ interface Participation {
   participation: any;
   ownParticipation: any;
   colorEchangeTag: any;
-  updateParticipations:any;
+  updateParticipations: any;
 }
 
 const Participation = (props: Participation) => {
-  const { participation, ownParticipation, colorEchangeTag, updateParticipations } = props;
+  const {
+    participation,
+    ownParticipation,
+    colorEchangeTag,
+    updateParticipations
+  } = props;
   const { date, active, id } = participation;
   const { name } = participation.participant;
   const [callingApi, setCallingApi] = useState(false);
@@ -111,12 +120,11 @@ const Participation = (props: Participation) => {
       setCallingApi(false);
       console.log("fin appel api échange");
       updateParticipations();
-      // window.location.reload();
     } catch (err) {
       console.log(err);
       alert("Une erreur s'est produite lors de la requête");
+      setCallingApi(false);
       updateParticipations();
-      // window.location.reload();
     }
   };
 
@@ -152,13 +160,15 @@ const Participation = (props: Participation) => {
   let styleColorTag = {};
 
   let getStyleColorTag = () => {
-    if(participation.echange){
-      styleColorTag = {color: colorEchangeTag.get(participation.echange.id)};
+    if (participation.echange) {
+      styleColorTag = { color: colorEchangeTag.get(participation.echange.id) };
     }
     return styleColorTag;
-  }
+  };
 
-  const infoTag = <span className="oi oi-tag ml-2" style={getStyleColorTag()} />;
+  const infoTag = (
+    <span className="oi oi-tag ml-2" style={getStyleColorTag()} />
+  );
 
   const popover = (
     <Popover

@@ -9,7 +9,9 @@ const Properties = {
         demanderEchange: "demanderEchange",
         annulerEchange: "annulerEchange",
         refuserEchange: "refuserEchange",
-        accepterEchange: "accepterEchange"
+        accepterEchange: "accepterEchange",
+        unshift: "unshift",
+        generateParticipations: "generateParticipations"
     }
     
 

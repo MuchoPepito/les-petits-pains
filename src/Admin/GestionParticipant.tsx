@@ -15,6 +15,7 @@ class GestionParticipant extends Component<any, any> {
 
   updateParticipants = async () => {
     console.log("updating participants...")
+    this.setState({participants: []});
     const participantsData = await restApiService.getParticipants();
     this.setState({
       participants: participantsData._embedded.participants.sort(
@@ -61,6 +62,9 @@ const ParticipantForm = (props: any) => {
       email: participantEmail,
       active: participantIsActive
     });
+    if(!participantIsActive){
+      //TODO disable participations
+    }
     alert(`Le participant ${participantName} a bien été mis à jour.`)
     updateParticipants();
   };

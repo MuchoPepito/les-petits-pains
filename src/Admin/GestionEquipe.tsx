@@ -65,6 +65,9 @@ class GestionEquipe extends Component<any, any> {
 
     return (
       <div className="offset-sm-2 offset-2 col-8">
+        <div className="alert alert-danger" role="alert">
+          La gestion d'équipe n'est pas totalement implémentée ! <br/>Il est déconseillé d'en avoir plusieurs en bdd ou de changer l'équipe d'un participant
+        </div>
         {creerEquipeForm}
         {this.state.equipes.map((equipe: any, index: number) => {
           return (
