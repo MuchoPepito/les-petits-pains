@@ -1,6 +1,7 @@
 import auth0 from "auth0-js";
-import { reject } from "q";
+import Properties from "./Properties";
 
+const {frontUrl} = Properties;
 class Auth {
   private _auth0: auth0.WebAuth;
   profile: any;
@@ -20,7 +21,7 @@ class Auth {
       domain: "sopradialog.eu.auth0.com",
       audience: "https://lespetitspains/",
       clientID: "OQXzQKJooX9lOulr0po99TGQPlb7GaBb",
-      redirectUri: "http://localhost:3000/callback",
+      redirectUri: frontUrl.concat("callback"),
       responseType: "token id_token",
       scope: "openid profile"
     });
@@ -71,7 +72,7 @@ class Auth {
 
   signOut = () => {
     this.auth0.logout({
-      returnTo: 'http://localhost:3000',
+      returnTo: frontUrl,
       clientID: 'OQXzQKJooX9lOulr0po99TGQPlb7GaBb'
     })
   };

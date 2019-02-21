@@ -1,5 +1,6 @@
 const Properties = {
-    contextUrl: "http://localhost:8080/",
+    contextUrl: "https://lespetitspains.herokuapp.com/",
+    frontUrl: "https://lespetitspains.firebaseapp.com/",
 
     endPoints : {
         participants: "participants/",
